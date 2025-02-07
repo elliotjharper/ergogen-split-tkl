@@ -1,0 +1,202 @@
+meta:
+  engine: 4.1.0
+units:
+  # keysize
+  kCapX: 19.05
+  kCapY: 19.05
+  # make the ergogen web preview
+  # use the our key size
+  $default_width: 19.05
+  $default_height: 19.05
+  # key padding
+  kPadX: 19.05
+  kPadY: 19.05
+
+outlines:
+pcbs:
+cases:
+
+points:
+  key:
+    # padding is Y (but at 90 it is X)
+    padding: 1kPadX
+    # spread is X (but at 90 it is Y)
+    spread: 1kPadX
+
+  zones:
+    qwertyMatrix:
+      # we are swapping rows for cols to get x stagger as we are not ortho linear
+      anchor.rotate: -90
+
+      # read as columns. see anchor.rotate
+      rows:
+        lBord:
+        q1:
+        w2:
+        e3:
+        r4:
+        t5:
+        y6:
+        u7:
+        i8:
+        o9:
+        p10:
+        minus:
+        plus:
+        backspace:
+
+      # read as rows. see anchor.rotate
+      columns:
+        num:
+          # adjust the backspace key
+          rows.backspace:
+            height: 2kPadX
+            shift: [0, 0.5kPadX]
+
+        tab:
+          # adjust the TAB key
+          rows.lBord:
+            # adjusts the width of this key but from center outwards
+            height: 1.5kPadX
+            # after it stretch out from center re aligns the left/start pos
+            # formula = `{height}/6`
+            shift: [0, 0.25kPadX]
+            # fixes the start of the next key
+            # formula = `{height}/1.2`
+            padding: 1.25kPadX
+
+          # no key here, just return
+          rows.backspace.skip: true
+
+        cap:
+          # adjust the CAPS key
+          rows.lBord:
+            skip: true
+            padding: 1.75kPadX
+
+          # no key here, just return
+          rows.backspace.skip: true
+
+        shift:
+          # adjust the LShift key
+          rows.lBord:
+            height: 1.25kPadX
+            shift: [0, 0.125kPadX]
+            padding: 1.125kPadX
+
+          # adjust the RShift key
+          rows.plus:
+            height: 2.75kPadX
+            shift: [0, 0.88kPadX]
+
+          # no more keys on this row after RShift
+          rows.backspace.skip: true
+
+    ctrlMatrix:
+      columns:
+        ctrl:
+          rows.only:
+            width: 1.25kPadX
+            adjust.shift: [0.125kPadX, 0]
+
+        win:
+          rows.only:
+            # spread seems to be the spacing after prev
+            # set it to the width of the col before
+            # and on this first one add what the extra would have been (seems to be needed because of the use of adjust.shift on col 1)
+            spread: 1.25kPadX + 0.125kPadX
+            width: 1.25kPadX
+
+        lAlt:
+          rows.only:
+            spread: 1.25kPadX
+            width: 1.25kPadX
+
+        space:
+          rows.only:
+            spread: 3.75kPadX
+            width: 6.25kPadX
+
+        rAlt:
+          rows.only:
+            spread: 3.75kPadX
+            width: 1.25kPadX
+
+        fn:
+          rows.only:
+            spread: 1.25kPadX
+            width: 1.25kPadX
+
+        rClick:
+          rows.only:
+            spread: 1.25kPadX
+            width: 1.25kPadX
+
+        rCtrl:
+          rows.only:
+            spread: 1.25kPadX
+            width: 1.25kPadX
+
+      rows:
+        only:
+          shift: [0, -4kPadX]
+
+    functionKeysMatrix:
+      columns:
+        esc:
+
+        f1:
+          key.spread: 2kPadX
+        f2:
+        f3:
+        f4:
+
+        f5:
+          key.spread: 1.5kPadX
+        f6:
+        f7:
+        f8:
+
+        f9:
+          key.spread: 1.5kPadX
+        f10:
+        f11:
+        f12:
+
+        print:
+          key.spread: 1.5kPadX
+        scroll:
+        pause:
+
+      rows:
+        only:
+          shift: [0, 1.52kPadX]
+
+    returnMatrix:
+      columns:
+        only:
+      rows:
+        only:
+          shift: [13.9kPadX, -1.5kPadX]
+
+    navMatrix:
+      columns:
+        left:
+          rows.gap.skip: true
+          rows.arrowUpper.skip: true
+
+        middle:
+          rows.gap.skip: true
+
+        right:
+          rows.gap.skip: true
+          rows.arrowUpper.skip: true
+
+      rows:
+        arrowLower:
+          shift: [15.5kPadX, -4kPadX]
+
+        arrowUpper:
+        gap:
+        delRow:
+        insertRow:

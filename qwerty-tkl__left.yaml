@@ -1,0 +1,152 @@
+meta:
+  engine: 4.1.0
+units:
+  # keysize
+  kCapX: 19.05
+  kCapY: 19.05
+  # make the ergogen web preview
+  # use the our key size
+  $default_width: 19.05
+  $default_height: 19.05
+  # key padding
+  kPadX: 19.05 + 2
+  kPadY: 19.05 + 2
+
+pcbs:
+cases:
+
+points:
+  key:
+    # padding is Y (but at 90 it is X)
+    padding: 1kCapX
+    # spread is X (but at 90 it is Y)
+    spread: 1kCapX
+
+  zones:
+    qwertyMatrix:
+      # we are swapping rows for cols to get x stagger as we are not ortho linear
+      anchor.rotate: -90
+
+      # read as columns. see anchor.rotate
+      rows:
+        lBord:
+        q1:
+        w2:
+        e3:
+        r4:
+        t5:
+        y6:
+        u7:
+
+      # read as rows. see anchor.rotate
+      columns:
+        num:
+
+        tab:
+          # adjust the TAB key
+          rows.lBord:
+            # adjusts the width of this key but from center outwards
+            height: 1.5kCapX
+            # after it stretch out from center re aligns the left/start pos
+            # formula = `{height}/6`
+            shift: [0, 0.25kCapX]
+            # fixes the start of the next key
+            # formula = `{height}/1.2`
+            padding: 1.25kCapX
+
+        cap:
+          # adjust the CAPS key
+          rows.lBord:
+            skip: true
+            padding: 1.75kCapX
+
+          rows.u7.skip: true
+
+        shift:
+          # adjust the LShift key
+          rows.lBord:
+            height: 1.25kCapX
+            shift: [0, 0.125kCapX]
+            padding: 1.125kCapX
+
+          rows.u7.skip: true
+
+    ctrlMatrix:
+      columns:
+        ctrl:
+          rows.only:
+            width: 1.25kCapX
+            adjust.shift: [0.125kCapX, 0]
+
+        win:
+          rows.only:
+            # spread seems to be the spacing after prev
+            # set it to the width of the col before
+            # and on this first one add what the extra would have been (seems to be needed because of the use of adjust.shift on col 1)
+            spread: 1.25kCapX + 0.125kCapX
+            width: 1.25kCapX
+
+        lAlt:
+          rows.only:
+            spread: 1.25kCapX
+            width: 1.25kCapX
+
+        space:
+          rows.only:
+            spread: 2.5kCapX
+            width: 3.75kCapX
+
+      rows:
+        only:
+          shift: [0, -4kCapX]
+
+    functionKeysMatrix:
+      columns:
+        esc:
+
+        f1:
+          key.spread: 2kCapX
+        f2:
+        f3:
+        f4:
+
+        f5:
+          key.spread: 1.5kCapX
+        f6:
+
+      rows:
+        only:
+          shift: [0, 1.52kCapX]
+
+outlines:
+  rawOutline:
+    - what: rectangle
+      where: true
+      size: [kCapX, kCapY]
+
+  keys:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [kCapX, kCapY]
+
+  case:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: functionKeysMatrix_esc_only
+          shift: [-1kPadX, 1kPadY]
+        - ref: functionKeysMatrix_f6_only
+          shift: [1kPadX, 1kPadY]
+        - ref: qwertyMatrix_tab_u7
+          shift: [1kPadX, 1kPadY]
+        - ref: ctrlMatrix_space_only
+          shift: [1kPadX, -1kPadY]
+        - ref: ctrlMatrix_ctrl_only
+          shift: [-1kPadX, -1kPadY]
+      fillet: 0.25kPadX
+
+  combo:
+    - name: case
+    - operation: subtract
+      name: keys
