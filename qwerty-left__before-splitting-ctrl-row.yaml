@@ -68,59 +68,42 @@ points:
             shift: [0, 0.125kPadX]
             padding: 1.125kPadX
 
-    ctrlRow:
-      anchor.rotate: -90
-
-      key:
-        # padding is Y (but at 90 it is X)
-        padding: 1kPadX
-        # spread is X (but at 90 it is Y)
-        spread: 1kPadX
-
-      columns:
         ctrl:
-          rows.only:
+          # adjust the LCtrl key
+          rows.lBord:
             height: 1.5kPadX
             shift: [0, 0.25kPadX]
             padding: 1.25kPadX
 
-        win:
-          rows.only:
+          # adjust the Win key
+          rows.q1:
             height: 1.25kPadX
             shift: [0, 0.125kPadX]
             padding: 1.125kPadX
 
-        lAlt:
-          rows.only:
+          # adjust the LAlt key
+          rows.w2:
             height: 1.25kPadX
             shift: [0, 0.125kPadX]
             padding: 1.125kPadX
 
-        space:
-          rows.only:
+          # adjust the space key
+          rows.e3:
             height: 6.25kPadX
             shift: [0, 2.625kPadX]
             padding: 3.625kPadX
 
-        rAlt:
-          rows.only:
+          # adjust the RAlt key
+          rows.r4:
             height: 1.25kPadX
             shift: [0, 0.125kPadX]
             padding: 1.125kPadX
 
-        fn:
-          rows.only:
+          # adjust the Fn key
+          rows.t5:
             height: 1.25kPadX
             shift: [0, 0.125kPadX]
             padding: 1.125kPadX
-
-        rClick:
-
-        rCtrl:
-
-      rows:
-        only:
-          shift: [0, -4kPadX]
 
     functionRow:
       key:

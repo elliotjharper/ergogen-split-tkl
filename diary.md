@@ -29,15 +29,18 @@ cherry keycap
     1.5u        =   27
     1.75u       =   31.5
     2u          =   36
+    6.25u       =   112.5
 
 my keyboard measurements
     tab         =   1.5u
     cap         =   1.75u
     lShift      =   1.25u
     lCtrl       =   1.5u
+    
     win         =   1.25u
-    alt(lr)     =   1.25u
+    lAlt        =   1.25u
     space       =   6.25u
+    rAlt        =   1.25u
 
 
 
