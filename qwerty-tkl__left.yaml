@@ -1,26 +1,38 @@
 meta:
   engine: 4.1.0
+
 units:
-  # keysize
-  kCapX: 19.05
-  kCapY: 19.05
+  # kx/ky is the layout space used to position edge-to-edge,
+  # for example using cherry mx as a guide:
+  # a cherry mx switch pcb plate hole is 14x14,
+  # a keycap is 18x18,
+  # but the size to use for laying out edge to edge (taking into account gaps between switches/keycaps) is 19.05mm
+  kx: 19.05
+  ky: 19.05
+
   # make the ergogen web preview
-  # use the our key size
+  # SHOULD MATCH `kx/ky`
   $default_width: 19.05
   $default_height: 19.05
-  # key padding
-  kPadX: 19.05 + 2
-  kPadY: 19.05 + 2
 
-pcbs:
-cases:
+  # capX/capY is the size of a key cap
+  capX: 18
+  capY: 18
+
+  # swHoleX/swHoleY is the size of a keyswitch
+  swHoleX: 14
+  swHoleY: 14
+
+  # paddedX/paddedY is a sizing used to produce the case, the padding is used to provide an outer space around the edge of all keys
+  paddedX: 19.05 + 2
+  paddedY: 19.05 + 2
 
 points:
   key:
     # padding is Y (but at 90 it is X)
-    padding: 1kCapX
+    padding: 1kx
     # spread is X (but at 90 it is Y)
-    spread: 1kCapX
+    spread: 1kx
 
   zones:
     qwertyMatrix:
@@ -46,28 +58,28 @@ points:
           # adjust the TAB key
           rows.lBord:
             # adjusts the width of this key but from center outwards
-            height: 1.5kCapX
+            height: 1.5kx
             # after it stretch out from center re aligns the left/start pos
             # formula = `{height}/6`
-            shift: [0, 0.25kCapX]
+            shift: [0, 0.25kx]
             # fixes the start of the next key
             # formula = `{height}/1.2`
-            padding: 1.25kCapX
+            padding: 1.25kx
 
         cap:
           # adjust the CAPS key
           rows.lBord:
             skip: true
-            padding: 1.75kCapX
+            padding: 1.75kx
 
           rows.u7.skip: true
 
         shift:
           # adjust the LShift key
           rows.lBord:
-            height: 1.25kCapX
-            shift: [0, 0.125kCapX]
-            padding: 1.125kCapX
+            height: 1.25kx
+            shift: [0, 0.125kx]
+            padding: 1.125kx
 
           rows.u7.skip: true
 
@@ -75,78 +87,88 @@ points:
       columns:
         ctrl:
           rows.only:
-            width: 1.25kCapX
-            adjust.shift: [0.125kCapX, 0]
+            width: 1.25kx
+            adjust.shift: [0.125kx, 0]
 
         win:
           rows.only:
             # spread seems to be the spacing after prev
             # set it to the width of the col before
             # and on this first one add what the extra would have been (seems to be needed because of the use of adjust.shift on col 1)
-            spread: 1.25kCapX + 0.125kCapX
-            width: 1.25kCapX
+            spread: 1.25kx + 0.125kx
+            width: 1.25kx
 
         lAlt:
           rows.only:
-            spread: 1.25kCapX
-            width: 1.25kCapX
+            spread: 1.25kx
+            width: 1.25kx
 
         space:
           rows.only:
-            spread: 2.5kCapX
-            width: 3.75kCapX
+            spread: 2.5kx
+            width: 3.75kx
 
       rows:
         only:
-          shift: [0, -4kCapX]
+          shift: [0, -4kx]
 
     functionKeysMatrix:
       columns:
         esc:
 
         f1:
-          key.spread: 2kCapX
+          key.spread: 2kx
         f2:
         f3:
         f4:
 
         f5:
-          key.spread: 1.5kCapX
+          key.spread: 1.5kx
         f6:
 
       rows:
         only:
-          shift: [0, 1.52kCapX]
+          shift: [0, 1.52kx]
 
 outlines:
-  rawOutline:
+  keyCaps:
     - what: rectangle
       where: true
-      size: [kCapX, kCapY]
+      bound: false
+      size: [capX, capY]
+
+  switches:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [swHoleX, swHoleY]
 
   keys:
     - what: rectangle
       where: true
       bound: false
-      size: [kCapX, kCapY]
+      size: [kx, ky]
 
   case:
     - what: polygon
       operation: stack
       points:
         - ref: functionKeysMatrix_esc_only
-          shift: [-1kPadX, 1kPadY]
+          shift: [-paddedX, paddedY]
         - ref: functionKeysMatrix_f6_only
-          shift: [1kPadX, 1kPadY]
+          shift: [paddedX, paddedY]
         - ref: qwertyMatrix_tab_u7
-          shift: [1kPadX, 1kPadY]
+          shift: [paddedX, paddedY]
         - ref: ctrlMatrix_space_only
-          shift: [1kPadX, -1kPadY]
+          shift: [paddedX, -paddedY]
         - ref: ctrlMatrix_ctrl_only
-          shift: [-1kPadX, -1kPadY]
-      fillet: 0.25kPadX
+          shift: [-paddedX, -paddedY]
+      fillet: 0.25paddedX
 
   combo:
     - name: case
     - operation: subtract
       name: keys
+
+pcbs:
+cases:
