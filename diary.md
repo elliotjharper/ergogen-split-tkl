@@ -47,7 +47,7 @@ my keyboard measurements
 LINKS
 - https://flatfootfox.com/ergogen-part1-units-points/
 - https://ergogen.ceoloide.com/
-
+- https://www.youtube.com/watch?v=7UXsD7nSfDY
 
 
 GOTCHA #1!

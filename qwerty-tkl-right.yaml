@@ -1,27 +1,36 @@
 meta:
   engine: 4.1.0
 units:
-  # keysize
-  kCapX: 19.05
-  kCapY: 19.05
+  # kx/ky is the layout space used to position edge-to-edge,
+  # for example using cherry mx as a guide:
+  # a cherry mx switch pcb plate hole is 14x14,
+  # a keycap is 18x18,
+  # but the size to use for laying out edge to edge (taking into account gaps between switches/keycaps) is 19.05mm
+  kx: 19.05
+  ky: 19.05
+
   # make the ergogen web preview
-  # use the our key size
+  # SHOULD MATCH `kx/ky`
   $default_width: 19.05
   $default_height: 19.05
-  # key padding
-  kPadX: 19.05
-  kPadY: 19.05
 
-outlines:
-pcbs:
-cases:
+  # capX/capY is the size of a key cap
+  capX: 18
+  capY: 18
+
+  # swHoleX/swHoleY is the size of a keyswitch
+  swHoleX: 14
+  swHoleY: 14
+
+  # pad is used to bump the edges of the case polygon out
+  pad: 12
 
 points:
   key:
     # padding is Y (but at 90 it is X)
-    padding: 1kPadX
+    padding: 1kx
     # spread is X (but at 90 it is Y)
-    spread: 1kPadX
+    spread: 1kx
 
   zones:
     qwertyMatrix:
@@ -31,7 +40,7 @@ points:
       # read as columns. see anchor.rotate
       rows:
         t5:
-          shift: [0, 5kPadX]
+          shift: [0, 5kx]
         y6:
         u7:
         i8:
@@ -44,21 +53,26 @@ points:
       # read as rows. see anchor.rotate
       columns:
         num:
+          rows.t5:
+            skip: true
+            shift: [0, 4.75kx]
+
           # adjust the backspace key
           rows.backspace:
-            height: 2kPadX
-            shift: [0, 0.5kPadX]
+            height: 2kx
+            shift: [0, 0.5kx]
 
         tab:
           rows.t5:
-            shift: [0, 5.2kPadX]
+            skip: true
+            shift: [0, 5.25kx]
 
           # no key here, just return
           rows.backspace.skip: true
 
         cap:
           rows.t5:
-            shift: [0, 5.4kPadX]
+            shift: [0, 5.5kx]
 
           # no key here, just return
           rows.backspace.skip: true
@@ -68,8 +82,8 @@ points:
 
           # adjust the RShift key
           rows.plus:
-            height: 2.75kPadX
-            shift: [0, 0.88kPadX]
+            height: 2.75kx
+            shift: [0, 0.88kx]
 
           # no more keys on this row after RShift
           rows.backspace.skip: true
@@ -78,60 +92,61 @@ points:
       columns:
         space:
           rows.only:
-            #spread: 4.75kPadX
-            width: 3kPadX
+            #spread: 4.75kx
+            width: 3kx
 
         rAlt:
           rows.only:
-            spread: 2.125kPadX
-            width: 1.25kPadX
+            spread: 2.875kx
+            width: 1.25kx
 
         fn:
           rows.only:
-            spread: 1.25kPadX
-            width: 1.25kPadX
+            spread: 1.25kx
+            width: 1.25kx
 
         rClick:
           rows.only:
-            spread: 1.25kPadX
-            width: 1.25kPadX
+            spread: 1.25kx
+            width: 1.25kx
 
         rCtrl:
           rows.only:
-            spread: 1.25kPadX
-            width: 1.25kPadX
+            spread: 1.25kx
+            width: 1.25kx
 
       rows:
         only:
-          shift: [7.755kPadX, -4kPadX]
+          shift: [7kx, -4kx]
 
     functionKeysMatrix:
       columns:
+        f5:
+        f6:
         f7:
-          key.spread: 1.5kPadX
         f8:
 
         f9:
-          key.spread: 1.5kPadX
+          key.spread: 1.25kx
         f10:
         f11:
         f12:
 
         print:
-          key.spread: 1.5kPadX
+          key.spread: 1.25kx
         scroll:
         pause:
 
       rows:
         only:
-          shift: [8.5kPadX, 1.52kPadX]
+          shift: [6.5kx, 1.25kx]
 
     returnMatrix:
       columns:
         only:
       rows:
         only:
-          shift: [13.9kPadX, -1.5kPadX]
+          shift: [13.7kx, -1.5kx]
 
     navMatrix:
       columns:
@@ -148,9 +163,63 @@ points:
 
       rows:
         arrowLower:
-          shift: [15.5kPadX, -4kPadX]
+          shift: [15kx, -4kx]
 
         arrowUpper:
         gap:
         delRow:
         insertRow:
+
+outlines:
+  threeUKeyCaps:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [3capX, capY]
+
+  keyCaps:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [capX, capY]
+
+  switches:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [swHoleX, swHoleY]
+
+  case:
+    - what: polygon
+      operation: stack
+      points:
+        # - ref: qwertyMatrix_shift_y6
+        #   shift: [0.5ky, -1pad]
+        - ref: qwertyMatrix_cap_t5
+          shift: [0.5ky, -1pad]
+        - ref: qwertyMatrix_cap_t5
+          shift: [-1pad, -1pad]
+        - ref: qwertyMatrix_num_y6
+          shift: [-0.5ky, -1pad]
+        - ref: functionKeysMatrix_f5_only
+          shift: [-pad, pad]
+        - ref: functionKeysMatrix_pause_only
+          shift: [pad, pad]
+        - ref: navMatrix_right_arrowLower
+          shift: [pad, -pad]
+        - ref: ctrlMatrix_space_only
+          shift: [-1.5kx, -pad]
+      fillet: 0.25pad
+
+  combo:
+    - name: case
+    - operation: subtract
+      name: keyCaps
+
+  combo3u:
+    - name: case
+    - operation: subtract
+      name: threeUKeyCaps
+
+pcbs:
+cases:

@@ -23,9 +23,8 @@ units:
   swHoleX: 14
   swHoleY: 14
 
-  # paddedX/paddedY is a sizing used to produce the case, the padding is used to provide an outer space around the edge of all keys
-  paddedX: 19.05 + 2
-  paddedY: 19.05 + 2
+  # pad is used to bump the edges of the case polygon out
+  pad: 12
 
 points:
   key:
@@ -100,7 +99,7 @@ points:
 
         lAlt:
           rows.only:
-            spread: 1.25kx
+            spread: 1.75kx
             width: 1.25kx
 
         space:
@@ -117,20 +116,26 @@ points:
         esc:
 
         f1:
-          key.spread: 2kx
+          key.spread: 1.25kx
         f2:
         f3:
         f4:
 
         f5:
-          key.spread: 1.5kx
+          key.spread: 1.25kx
         f6:
 
       rows:
         only:
-          shift: [0, 1.52kx]
+          shift: [0, 1.25kx]
 
 outlines:
+  threeUKeyCaps:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [3capX, capY]
+
   keyCaps:
     - what: rectangle
       where: true
@@ -154,21 +159,30 @@ outlines:
       operation: stack
       points:
         - ref: functionKeysMatrix_esc_only
-          shift: [-paddedX, paddedY]
+          shift: [-pad, pad]
         - ref: functionKeysMatrix_f6_only
-          shift: [paddedX, paddedY]
+          shift: [pad, pad]
+        - ref: qwertyMatrix_num_u7
+          shift: [-1ky, 0.5kx]
         - ref: qwertyMatrix_tab_u7
-          shift: [paddedX, paddedY]
+          shift: [-0.5kx, pad]
+        - ref: qwertyMatrix_tab_u7
+          shift: [0.5kx, pad]
         - ref: ctrlMatrix_space_only
-          shift: [paddedX, -paddedY]
+          shift: [2kx, -pad]
         - ref: ctrlMatrix_ctrl_only
-          shift: [-paddedX, -paddedY]
-      fillet: 0.25paddedX
+          shift: [-pad, -pad]
+      fillet: 0.25pad
 
   combo:
     - name: case
     - operation: subtract
-      name: keys
+      name: keyCaps
+
+  combo3u:
+    - name: case
+    - operation: subtract
+      name: threeUKeyCaps
 
 pcbs:
 cases:
