@@ -65,12 +65,15 @@ points:
             # formula = `{height}/1.2`
             padding: 1.25kx
 
+          rows.u7.skip: true
+
         cap:
           # adjust the CAPS key
           rows.lBord:
             skip: true
             padding: 1.75kx
 
+          # no J key
           rows.u7.skip: true
 
         shift:
@@ -80,6 +83,7 @@ points:
             shift: [0, 0.125kx]
             padding: 1.125kx
 
+          # no N key
           rows.u7.skip: true
 
     ctrlMatrix:
@@ -163,11 +167,7 @@ outlines:
         - ref: functionKeysMatrix_f6_only
           shift: [pad, pad]
         - ref: qwertyMatrix_num_u7
-          shift: [-1ky, 0.5kx]
-        - ref: qwertyMatrix_tab_u7
-          shift: [-0.5kx, pad]
-        - ref: qwertyMatrix_tab_u7
-          shift: [0.5kx, pad]
+          shift: [-0.5ky, pad]
         - ref: ctrlMatrix_space_only
           shift: [2kx, -pad]
         - ref: ctrlMatrix_ctrl_only
