@@ -25,9 +25,14 @@ units:
 
   # pad is used to bump the edges of the case polygon out
   pad: 12
+  topPad: 14
 
   pcbOffsetX: 100
   pcbOffsetY: -100
+
+  mcNotchW: 42.5
+  mcNotchH: 32.5
+  mcNotchOffset: 10
 
 points:
   key:
@@ -154,6 +159,12 @@ outlines:
       bound: false
       size: [capX, capY]
 
+  fKeysOnlyFilter:
+    - what: rectangle
+      where: "/^functionKeysMatrix_.*/"
+      bound: false
+      size: [capX, capY]
+
   switches:
     - what: rectangle
       where: true
@@ -171,9 +182,17 @@ outlines:
       operation: stack
       points:
         - ref: functionKeysMatrix_esc_only
-          shift: [-pad, pad]
+          shift: [-pad, topPad]
+        - ref: functionKeysMatrix_esc_only
+          shift: [mcNotchOffset, topPad]
+        - ref: functionKeysMatrix_esc_only
+          shift: [mcNotchOffset, mcNotchH]
+        - ref: functionKeysMatrix_esc_only
+          shift: [mcNotchOffset+mcNotchW, mcNotchH]
+        - ref: functionKeysMatrix_esc_only
+          shift: [mcNotchOffset+mcNotchW, topPad]
         - ref: functionKeysMatrix_f6_only
-          shift: [pad, pad]
+          shift: [pad, topPad]
         - ref: qwertyMatrix_num_u7
           shift: [-0.5ky, pad]
         - ref: ctrlMatrix_space_only
@@ -199,9 +218,21 @@ pcbs:
         outline: case
 
     footprints:
-      mx-switches:
+      qwerty-switches:
         what: mx
-        where: true
+        where: "/^qwertyMatrix_.*/"
+        params:
+          keycaps: true
+          reverse: false
+          hotswap: false
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+        adjust:
+          rotate: 90
+
+      other-switches:
+        what: mx
+        where: "-/^qwertyMatrix_.*/"
         params:
           keycaps: true
           reverse: false
@@ -209,9 +240,19 @@ pcbs:
           from: "{{column_net}}"
           to: "{{colrow}}"
 
-      smd-diodes:
+      qwerty-diodes:
         what: diode
-        where: true
+        where: "/^qwertyMatrix_.*/"
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          rotate: 90
+          shift: [5, 0]
+
+      other-diodes:
+        what: diode
+        where: "-/^qwertyMatrix_.*/"
         params:
           from: "{{colrow}}"
           to: "{{row_net}}"
@@ -222,7 +263,7 @@ pcbs:
         what: promicro
         where:
           ref: functionKeysMatrix_esc_only
-          shift: [30, 25]
+          shift: [32.5, 22.5]
           rotate: 0
         params:
           orientation: "down"
