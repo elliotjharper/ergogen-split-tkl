@@ -26,6 +26,9 @@ units:
   # pad is used to bump the edges of the case polygon out
   pad: 12
 
+  pcbOffsetX: 100
+  pcbOffsetY: -100
+
 points:
   key:
     # padding is Y (but at 90 it is X)
@@ -37,6 +40,7 @@ points:
     qwertyMatrix:
       # we are swapping rows for cols to get x stagger as we are not ortho linear
       anchor.rotate: -90
+      anchor.shift: [pcbOffsetX, pcbOffsetY]
 
       # read as columns. see anchor.rotate
       rows:
@@ -87,6 +91,8 @@ points:
           rows.u7.skip: true
 
     ctrlMatrix:
+      anchor.shift: [pcbOffsetX, pcbOffsetY]
+
       columns:
         ctrl:
           rows.only:
@@ -116,6 +122,8 @@ points:
           shift: [0, -4kx]
 
     functionKeysMatrix:
+      anchor.shift: [pcbOffsetX, pcbOffsetY]
+
       columns:
         esc:
 
@@ -185,4 +193,38 @@ outlines:
       name: threeUKeyCaps
 
 pcbs:
+  pcb-v1:
+    outlines:
+      main:
+        outline: case
+
+    footprints:
+      mx-switches:
+        what: mx
+        where: true
+        params:
+          keycaps: true
+          reverse: false
+          hotswap: false
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+
+      smd-diodes:
+        what: diode
+        where: true
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -5]
+
+      kee-boar-controller:
+        what: promicro
+        where:
+          ref: functionKeysMatrix_esc_only
+          shift: [30, 25]
+          rotate: 0
+        params:
+          orientation: "down"
+
 cases:
