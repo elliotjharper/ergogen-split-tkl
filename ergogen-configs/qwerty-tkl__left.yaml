@@ -42,6 +42,38 @@ points:
     spread: 1kx
 
   zones:
+    functionKeysMatrix:
+      anchor.shift: [pcbOffsetX, pcbOffsetY]
+
+      columns:
+        esc:
+          key.column_net: P3
+
+        f1:
+          key.spread: 1.25kx
+          key.column_net: P4
+
+        f2:
+          key.column_net: P5
+
+        f3:
+          key.column_net: P6
+
+        f4:
+          key.column_net: P7
+
+        f5:
+          key.spread: 1.25kx
+          key.column_net: P8
+
+        f6:
+          key.column_net: P9
+
+      rows:
+        only:
+          shift: [0, 1.25kx]
+          row_net: P19
+
     qwertyMatrix:
       # we are swapping rows for cols to get x stagger as we are not ortho linear
       anchor.rotate: -90
@@ -56,11 +88,17 @@ points:
         r4:
         t5:
         y6:
-        u7:
 
       # read as rows. see anchor.rotate
       columns:
         num:
+          rows.lBord.column_net: P3
+          rows.q1.column_net: P4
+          rows.w2.column_net: P5
+          rows.e3.column_net: P6
+          rows.r4.column_net: P7
+          rows.t5.column_net: P8
+          rows.y6.column_net: P9
 
         tab:
           # adjust the TAB key
@@ -74,16 +112,11 @@ points:
             # formula = `{height}/1.2`
             padding: 1.25kx
 
-          rows.u7.skip: true
-
         cap:
           # adjust the CAPS key
           rows.lBord:
             skip: true
             padding: 1.75kx
-
-          # no J key
-          rows.u7.skip: true
 
         shift:
           # adjust the LShift key
@@ -91,9 +124,6 @@ points:
             height: 1.25kx
             shift: [0, 0.125kx]
             padding: 1.125kx
-
-          # no N key
-          rows.u7.skip: true
 
     ctrlMatrix:
       anchor.shift: [pcbOffsetX, pcbOffsetY]
@@ -103,6 +133,7 @@ points:
           rows.only:
             width: 1.25kx
             adjust.shift: [0.125kx, 0]
+          #key.column_net: P3
 
         win:
           rows.only:
@@ -111,45 +142,29 @@ points:
             # and on this first one add what the extra would have been (seems to be needed because of the use of adjust.shift on col 1)
             spread: 1.25kx + 0.125kx
             width: 1.25kx
+          #key.column_net: P4
 
         lAlt:
           rows.only:
             spread: 1.75kx
             width: 1.25kx
+          #key.column_net: P6
 
         space:
           rows.only:
             spread: 2.5kx
             width: 3.75kx
+          #key.column_net: P8
 
       rows:
         only:
           shift: [0, -4kx]
-
-    functionKeysMatrix:
-      anchor.shift: [pcbOffsetX, pcbOffsetY]
-
-      columns:
-        esc:
-
-        f1:
-          key.spread: 1.25kx
-        f2:
-        f3:
-        f4:
-
-        f5:
-          key.spread: 1.25kx
-        f6:
-
-      rows:
-        only:
-          shift: [0, 1.25kx]
+          #row_net: P10
 
 outlines:
   threeUKeyCaps:
     - what: rectangle
-      where: true
+      where: "/^ctrlMatrix_space/"
       bound: false
       size: [3capX, capY]
 
@@ -159,23 +174,40 @@ outlines:
       bound: false
       size: [capX, capY]
 
-  fKeysOnlyFilter:
-    - what: rectangle
-      where: "/^functionKeysMatrix_.*/"
-      bound: false
-      size: [capX, capY]
-
   switches:
     - what: rectangle
       where: true
       bound: false
       size: [swHoleX, swHoleY]
 
-  keys:
-    - what: rectangle
-      where: true
+  mxHole:
+    - what: polygon
+      where: {}
       bound: false
-      size: [kx, ky]
+      points:
+        - { shift: [0, 0] }
+        - { shift: [5, 0] }
+        - { shift: [0, -0.3] }
+        - { shift: [4, 0] }
+        - { shift: [0, 0.3] }
+        - { shift: [5, 0] }
+        - { shift: [0, -14] }
+        - { shift: [-5, 0] }
+        - { shift: [0, 0.3] }
+        - { shift: [-4, 0] }
+        - { shift: [0, -0.3] }
+        - { shift: [-5, 0] }
+
+  polyHoles:
+    - what: outline
+      where: "/^qwertyMatrix_.*/"
+      name: mxHole
+      adjust:
+        rotate: 90
+
+    - what: outline
+      where: "-/^qwertyMatrix_.*/"
+      name: mxHole
 
   case:
     - what: polygon
@@ -193,23 +225,27 @@ outlines:
           shift: [mcNotchOffset+mcNotchW, topPad]
         - ref: functionKeysMatrix_f6_only
           shift: [pad, topPad]
-        - ref: qwertyMatrix_num_u7
-          shift: [-0.5ky, pad]
+        - ref: qwertyMatrix_num_y6
+          shift: [-0.5ky, (kx+pad)]
         - ref: ctrlMatrix_space_only
           shift: [2kx, -pad]
         - ref: ctrlMatrix_ctrl_only
           shift: [-pad, -pad]
       fillet: 0.25pad
 
-  combo:
+  comboKeys:
     - name: case
     - operation: subtract
       name: keyCaps
-
-  combo3u:
-    - name: case
     - operation: subtract
       name: threeUKeyCaps
+
+  comboSwitchHoles:
+    - name: case
+    - operation: subtract
+      name: polyHoles
+      adjust:
+        shift: [-(swHoleX/2), swHoleY/2]
 
 pcbs:
   pcb-v1:
