@@ -72,7 +72,7 @@ points:
       rows:
         only:
           shift: [0, 1.25kx]
-          row_net: P19
+          row_net: P10
 
     qwertyMatrix:
       # we are swapping rows for cols to get x stagger as we are not ortho linear
@@ -99,10 +99,10 @@ points:
       # read as rows. see anchor.rotate
       columns:
         num:
-          key.row_net: P18
+          key.row_net: P16
 
         tab:
-          key.row_net: P15
+          key.row_net: P14
 
           # adjust the TAB key
           rows.lBord:
@@ -116,7 +116,7 @@ points:
             padding: 1.25kx
 
         cap:
-          key.row_net: P14
+          key.row_net: P15
 
           # adjust the CAPS key
           rows.lBord:
@@ -124,7 +124,7 @@ points:
             padding: 1.75kx
 
         shift:
-          key.row_net: P16
+          key.row_net: P18
 
           # adjust the LShift key
           rows.lBord:
@@ -166,7 +166,7 @@ points:
       rows:
         only:
           shift: [0, -4kx]
-          row_net: P10
+          row_net: P19
 
 outlines:
   threeUKeyCaps:
