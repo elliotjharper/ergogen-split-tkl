@@ -30,7 +30,7 @@ units:
   pcbOffsetX: 100
   pcbOffsetY: -100
 
-  mcNotchW: 42.5
+  mcNotchW: 60
   mcNotchH: 32.5
   mcNotchOffset: 10
 
@@ -221,7 +221,7 @@ outlines:
       operation: stack
       points:
         - ref: functionKeysMatrix_esc_only
-          shift: [-pad, topPad]
+          shift: [-1pad, topPad]
         - ref: functionKeysMatrix_esc_only
           shift: [mcNotchOffset, topPad]
         - ref: functionKeysMatrix_esc_only
@@ -232,12 +232,12 @@ outlines:
           shift: [mcNotchOffset+mcNotchW, topPad]
         - ref: functionKeysMatrix_f6_only
           shift: [pad, topPad]
-        - ref: qwertyMatrix_num_y6
-          shift: [-0.5ky, (kx+pad)]
+        - ref: qwertyMatrix_cap_y6
+          shift: [-0.5ky, 0.7kx]
         - ref: ctrlMatrix_space_only
-          shift: [2kx, -pad]
+          shift: [1.8kx, -1pad]
         - ref: ctrlMatrix_ctrl_only
-          shift: [-pad, -pad]
+          shift: [-1.2pad, -pad]
       fillet: 0.25pad
 
   comboKeys:
@@ -306,7 +306,7 @@ pcbs:
         what: promicro
         where:
           ref: functionKeysMatrix_esc_only
-          shift: [32.5, 22.5]
+          shift: [32.5, 21]
           rotate: 0
         params:
           orientation: "down"
